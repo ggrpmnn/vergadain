@@ -136,22 +136,19 @@ func (f *Flags) Validate() {
 		}
 		f.CredsFile, _ = os.OpenFile(f.CredsPath, os.O_RDONLY, 0644)
 		credsBytes, err := ioutil.ReadAll(f.CredsFile)
-		if err != nil {
-			color.Red("error: couldn't read supplied creds file")
-			os.Exit(1)
-		}
+		checkErr(err)
 		credsJSON, err := sj.NewJson(credsBytes)
-		if err != nil {
-			color.Red("error: couldn't parse creds JSON file")
-		}
+		checkErr(err)
 		un = credsJSON.Get("username").MustString()
 		pw = credsJSON.Get("password").MustString()
-		url = strings.TrimSuffix(credsJSON.Get("site_url").MustString(), "/") + RestEndpoint
+		url = credsJSON.Get("site_url").MustString()
 		fmt.Println(url)
 		if un == "" || pw == "" || url == "" {
-			color.Red("error: creds file missing at least one of username, password, or site_url values")
+			color.Red(`error: creds file missing at least one of "username", "password", or "site_url" values`)
+			flag.Usage()
 			os.Exit(1)
 		}
+		url = strings.TrimSuffix(url, "/") + RestEndpoint
 	}
 
 	// set file for writing
@@ -165,7 +162,7 @@ func (f *Flags) Validate() {
 
 	// if name and id are specified, error
 	if f.FieldName != "" && f.FieldID != "" {
-		color.Red("Please specify either name or ID (not both)")
+		color.Red("error: when searching, specify either name or ID (not both)")
 		os.Exit(1)
 	}
 
@@ -174,7 +171,7 @@ func (f *Flags) Validate() {
 		if !strings.HasPrefix(f.FieldID, "customfield_") {
 			_, err := strconv.Atoi(f.FieldID)
 			if err != nil {
-				color.Red("Specified ID value '%s' is invalid", f.FieldID)
+				color.Red("error: specified ID value '%s' is invalid", f.FieldID)
 				os.Exit(1)
 			}
 			f.FieldID = "customfield_" + f.FieldID
