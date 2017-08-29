@@ -39,10 +39,10 @@ type Flags struct {
 func main() {
 	// parse command line options
 	f := &Flags{}
-	flag.StringVar(&f.CredsPath, "c", "", "Path to credentials .yaml file (optional)")
-	flag.StringVar(&f.DataPath, "f", "", "Path to output file (optional)")
-	flag.StringVar(&f.FieldName, "n", "", "A field to search for (optional)")
-	flag.StringVar(&f.FieldID, "i", "", "A customfield ID to search for (optional)")
+	flag.StringVar(&f.CredsPath, "c", "", "path to the credentials JSON file (optional - see README for format)")
+	flag.StringVar(&f.DataPath, "f", "", "path to an output file (optional)")
+	flag.StringVar(&f.FieldName, "n", "", "a field name to search for (optional)")
+	flag.StringVar(&f.FieldID, "i", "", "a customfield ID to search for (optional)")
 	flag.Parse()
 	f.Validate()
 	if f.CredsFile != nil {
