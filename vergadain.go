@@ -120,14 +120,7 @@ func main() {
 	}
 
 	// print values from the map
-	count := 0
-	for _, fd := range vals {
-		fd.Write(f.DataFile)
-		count++
-		if count < len(vals) {
-			WriteSeparator("===================", f.DataFile)
-		}
-	}
+	WriteAllFields(vals, f.DataFile)
 
 	return
 }

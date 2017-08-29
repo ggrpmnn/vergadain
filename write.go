@@ -8,6 +8,18 @@ import (
 	"github.com/fatih/color"
 )
 
+// WriteAllFields outputs all the data in the map to a specified file
+func WriteAllFields(data map[string]FieldData, file *os.File) {
+	count := 0
+	for _, fd := range data {
+		fd.Write(file)
+		count++
+		if count < len(data) {
+			WriteSeparator("===================", file)
+		}
+	}
+}
+
 // FieldData.print prints out the content of a FieldData object in an
 // easily readable format
 func (fd *FieldData) Write(f *os.File) {
