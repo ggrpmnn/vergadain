@@ -142,7 +142,6 @@ func (f *Flags) Validate() {
 		un = credsJSON.Get("username").MustString()
 		pw = credsJSON.Get("password").MustString()
 		url = credsJSON.Get("site_url").MustString()
-		fmt.Println(url)
 		if un == "" || pw == "" || url == "" {
 			color.Red(`error: creds file missing at least one of "username", "password", or "site_url" values`)
 			flag.Usage()
